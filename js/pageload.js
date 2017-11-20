@@ -12,9 +12,17 @@ $(document).ready(function() {
 
 
     function createPanel(article) {
-        // This functiont takes in a single JSON object for an article/headline
+        // This function takes in a single JSON object for an article/headline
         // It constructs a jQuery element containing all of the formatted HTML for the
         // article panel
+        var publication;
+        if(article.publication === 'Motor_Trend'){
+            publication = "Motor Trend";
+        } else if (article.publication === 'Jalopnik'){
+            publication = "Jalopnik";
+        }
+
+
         var panel = $(
             [
                 "<div class='card'>",
@@ -22,8 +30,8 @@ $(document).ready(function() {
                 "<div>",
                 "<div>",
 
-                "<div class='article-logo'>",
-                article.logo,
+                "<div>",
+                '<h1>' + publication + '</h1>',
                 "</div>",
 
                 "</div>",
@@ -78,15 +86,36 @@ $(document).ready(function() {
         // Empty the article container, run an AJAX request for any saved headlines
         articleContainer.empty();
         //$.get("https://autoscraper.herokuapp.com/api/selected").then(function(data) {
-        $.get("http://localhost:8080/api/selected").then(function(data) {
+
+        showPreloader();
+        $.get("https://autoscraper.herokuapp.com/api/selected").then(function(data) {
             // If we have headlines, render them to the page
             console.log(data);
             renderArticles(data);
-            $('#article-preloader').fadeOut(400, function(){
-                articleContainer.fadeIn();
-            });
+        }).done(function(){
+            $(".loader").fadeOut(3000);
 
         });
+    }
+
+    function showPreloader(){
+        $('.loader').show();
+        $("#bar").width(0); //Add this line
+
+        var progress = setInterval(function () {
+
+            var $bar = $("#bar");
+
+            if ($bar.width() >= 600) {
+                clearInterval(progress);
+            } else {
+                $bar.width($bar.width() + 60);
+            }
+            $bar.text($bar.width() / 6 + "%");
+            if ($bar.width() / 6 == 100){
+                $bar.text("Still working ... " + $bar.width() / 6 + "%");
+            }
+        }, 800);
     }
 
     // initPage kicks everything off when the page is loaded
