@@ -1,5 +1,4 @@
 
-
 .article-logo > svg {
     max-height: 30px;
     margin-top: 40px;
@@ -28,33 +27,14 @@
     width:50%;
 }
 
-.loader {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 99;
-    background: white;
-
-}
-.loader-container {
-    width: 100%;
-    height: auto;
-    position: absolute;
-    top:0px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    margin: auto;
-    text-align: center;
-}
-
 .progress {
     margin-top: 10px;
 }
 
+#loader {
+    width: 100%;
+    height: auto;
+}
 
 @media screen and (min-width: 768px) {
     .article_image{
@@ -62,3 +42,4 @@
     }
 
 }
+

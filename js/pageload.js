@@ -20,6 +20,10 @@ $(document).ready(function() {
             publication = "Motor Trend";
         } else if (article.publication === 'Jalopnik'){
             publication = "Jalopnik";
+        } else if (article.publication === 'Left_Lane_News'){
+            publication = "Left Lane News";
+        } else if (article.publication === 'Car_And_Driver'){
+            publication = "Car And Driver";
         }
 
 
@@ -88,35 +92,34 @@ $(document).ready(function() {
         //$.get("https://autoscraper.herokuapp.com/api/selected").then(function(data) {
 
         showPreloader();
-        $.get("https://autoscraper.herokuapp.com/api/selected?truncated=true?selected=true").then(function(data) {
-        //$.get("http://localhost:8080/api/selected?truncated=true?selected=true").then(function(data) {
+        //$.get("https://autoscraper.herokuapp.com/api/selected/AutomotiveNews").then(function(data) {
+        $.get("http://localhost:8080/api/selected/AutomotiveNews").then(function(data) {
             // If we have headlines, render them to the page
             console.log(data);
             renderArticles(data);
         }).done(function(){
-            $(".loader").fadeOut(3000);
+            $("#loader").fadeOut(3000);
 
         });
     }
 
     function showPreloader(){
-        $('.loader').show();
-        $("#bar").width(0); //Add this line
+        var bar = new ProgressBar.Line('#loader', {
+                strokeWidth: 4,
+                easing: 'easeInOut',
+                duration: 1400,
+                color: '#FFEA82',
+                trailColor: '#eee',
+                trailWidth: 1,
+                svgStyle: {width: '100%', height: '100%'},
+                from: {color: '#FFEA82'},
+                to: {color: '#ED6A5A'},
+                step: function(state, bar){
+                bar.path.setAttribute('stroke', state.color);
+    }
+    });
 
-        var progress = setInterval(function () {
-
-            var $bar = $("#bar");
-
-            if ($bar.width() >= 600) {
-                clearInterval(progress);
-            } else {
-                $bar.width($bar.width() + 60);
-            }
-            $bar.text($bar.width() / 6 + "%");
-            if ($bar.width() / 6 == 100){
-                $bar.text("Still working ... " + $bar.width() / 6 + "%");
-            }
-        }, 800);
+        bar.animate(1.0);
     }
 
     // initPage kicks everything off when the page is loaded
